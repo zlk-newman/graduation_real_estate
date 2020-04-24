@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.dao.MassageBeanMapper">
+  <resultMap id="BaseResultMap" type="com.zlk.bean.MassageBean">
+    <id column="mas_id" jdbcType="INTEGER" property="masId" />
+    <result column="a_name" jdbcType="VARCHAR" property="aName" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="mas" jdbcType="VARCHAR" property="mas" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mas_id, a_name, p_name, mas
+  </sql>
+    <select id="selectOne" parameterType="com.zlk.bean.MassageBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from massage
+        where mas_id = #{masId,jdbcType=VARCHAR}
+    </select>
+  <select id="selectByA" parameterType="com.zlk.bean.MassageBean" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from massage
+    where a_name = #{aName,jdbcType=VARCHAR}
+  </select>
+    <select id="selectByP" parameterType="com.zlk.bean.MassageBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from massage
+        where p_name = #{pName,jdbcType=VARCHAR}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from massage
+    where mas_id = #{masId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zlk.bean.MassageBean">
+    insert into massage (mas_id, a_name, p_name, 
+      mas)
+    values (#{masId,jdbcType=INTEGER}, #{aName,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, 
+      #{mas,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zlk.bean.MassageBean">
+    insert into massage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="masId != null">
+        mas_id,
+      </if>
+      <if test="aName != null">
+        a_name,
+      </if>
+      <if test="pName != null">
+        p_name,
+      </if>
+      <if test="mas != null">
+        mas,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="masId != null">
+        #{masId,jdbcType=INTEGER},
+      </if>
+      <if test="aName != null">
+        #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="pName != null">
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="mas != null">
+        #{mas,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlk.bean.MassageBean">
+    update massage
+    <set>
+      <if test="aName != null">
+        a_name = #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="pName != null">
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="mas != null">
+        mas = #{mas,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mas_id = #{masId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zlk.bean.MassageBean">
+    update massage
+    set a_name = #{aName,jdbcType=VARCHAR},
+      p_name = #{pName,jdbcType=VARCHAR},
+      mas = #{mas,jdbcType=VARCHAR}
+    where mas_id = #{masId,jdbcType=INTEGER}
+  </update>
+</mapper>

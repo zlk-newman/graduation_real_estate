@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.dao.AverageUserBeanMapper">
+  <resultMap id="BaseResultMap" type="com.zlk.bean.AverageUserBean">
+    <id column="a_id" jdbcType="INTEGER" property="aId" />
+    <result column="a_name" jdbcType="VARCHAR" property="aName" />
+    <result column="a_pwd" jdbcType="VARCHAR" property="aPwd" />
+    <result column="a_img" jdbcType="VARCHAR" property="aImg" />
+    <result column="a_emil" jdbcType="VARCHAR" property="aEmil" />
+    <result column="a_phone" jdbcType="VARCHAR" property="aPhone" />
+    <result column="a_address" jdbcType="VARCHAR" property="aAddress" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    a_id, a_name, a_pwd, a_img, a_emil, a_phone, a_address
+  </sql>
+
+    <select id="selectByAid" parameterType="com.zlk.bean.AverageUserBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from average_user
+        where a_id = #{aId,jdbcType=INTEGER}
+    </select>
+
+  <select id="selectForLogin" parameterType="com.zlk.bean.AverageUserBean" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from average_user
+    where a_name = #{aName,jdbcType=VARCHAR} and  a_pwd = #{aPwd,jdbcType=VARCHAR}
+  </select>
+
+    <!--
+  动态查询
+  -->
+    <select id="selectAverageUser" parameterType="com.zlk.bean.AverageUserBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from average_user
+
+        <where>
+
+            <if test="aName != null and aName != ''">
+                and a_name like concat('%', #{aName,jdbcType=VARCHAR},'%')
+            </if>
+
+        </where>
+    </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from average_user
+    where a_id = #{aId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zlk.bean.AverageUserBean">
+    insert into average_user (a_id, a_name, a_pwd, 
+      a_img, a_emil, a_phone, 
+      a_address)
+    values (#{aId,jdbcType=INTEGER}, #{aName,jdbcType=VARCHAR}, #{aPwd,jdbcType=VARCHAR}, 
+      #{aImg,jdbcType=VARCHAR}, #{aEmil,jdbcType=VARCHAR}, #{aPhone,jdbcType=VARCHAR},
+      #{aAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zlk.bean.AverageUserBean">
+    insert into average_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aId != null">
+        a_id,
+      </if>
+      <if test="aName != null">
+        a_name,
+      </if>
+      <if test="aPwd != null">
+        a_pwd,
+      </if>
+      <if test="aImg != null">
+        a_img,
+      </if>
+      <if test="aEmil != null">
+        a_emil,
+      </if>
+      <if test="aPhone != null">
+        a_phone,
+      </if>
+      <if test="aAddress != null">
+        a_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aId != null">
+        #{aId,jdbcType=INTEGER},
+      </if>
+      <if test="aName != null">
+        #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="aPwd != null">
+        #{aPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="aImg != null">
+        #{aImg,jdbcType=VARCHAR},
+      </if>
+      <if test="aEmil != null">
+        #{aEmil,jdbcType=VARCHAR},
+      </if>
+      <if test="aPhone != null">
+        #{aPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="aAddress != null">
+        #{aAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlk.bean.AverageUserBean">
+    update average_user
+    <set>
+      <if test="aName != null">
+        a_name = #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="aPwd != null">
+        a_pwd = #{aPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="aImg != null">
+        a_img = #{aImg,jdbcType=VARCHAR},
+      </if>
+      <if test="aEmil != null">
+        a_emil = #{aEmil,jdbcType=VARCHAR},
+      </if>
+      <if test="aPhone != null">
+        a_phone = #{aPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="aAddress != null">
+        a_address = #{aAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where a_id = #{aId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zlk.bean.AverageUserBean">
+    update average_user
+    set a_name = #{aName,jdbcType=VARCHAR},
+      a_pwd = #{aPwd,jdbcType=VARCHAR},
+      a_img = #{aImg,jdbcType=VARCHAR},
+      a_emil = #{aEmil,jdbcType=VARCHAR},
+      a_phone = #{aPhone,jdbcType=VARCHAR},
+      a_address = #{aAddress,jdbcType=VARCHAR}
+    where a_id = #{aId,jdbcType=INTEGER}
+  </update>
+</mapper>

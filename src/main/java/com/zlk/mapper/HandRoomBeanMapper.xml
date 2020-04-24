@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.dao.HandRoomBeanMapper">
+  <resultMap id="BaseResultMap" type="com.zlk.bean.HandRoomBean">
+    <id column="hand_id" jdbcType="INTEGER" property="handId" />
+    <result column="hand_name" jdbcType="VARCHAR" property="handName" />
+    <result column="hand_price" jdbcType="DOUBLE" property="handPrice" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="hand_address" jdbcType="VARCHAR" property="handAddress" />
+    <result column="hand_number" jdbcType="INTEGER" property="handNumber" />
+    <result column="hand_img" jdbcType="VARCHAR" property="handImg" />
+    <result column="hand_describe" jdbcType="VARCHAR" property="handDescribe" />
+    <result column="hand_age" jdbcType="INTEGER" property="handAge" />
+    <result column="hand_colnum" jdbcType="INTEGER" property="handColnum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    hand_id, hand_name, hand_price, p_name, hand_address, hand_number, hand_img, hand_describe, 
+    hand_age, hand_colnum
+  </sql>
+
+    <select id="selectHandRoomFor" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from hand_room
+        where p_name = #{pName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectHandById" parameterType="com.zlk.bean.HandRoomBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from hand_room
+        where hand_id = #{handId,jdbcType=INTEGER}
+    </select>
+
+  <select id="selectByPrimaryKey" parameterType="com.zlk.bean.HandRoomBean" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hand_room
+    where hand_name = #{handName,jdbcType=VARCHAR} and hand_number>=0
+  </select>
+
+    <!--
+  动态查询
+  -->
+    <select id="selectHandRoom" parameterType="com.zlk.bean.HandRoomBean" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from hand_room
+
+    <where>
+        hand_number>=0
+        <if test="handName != null and handName != ''">
+            and hand_name like concat('%', #{handName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="handPrice != null and handPrice != ''">
+            and hand_price like concat('%', #{handPrice,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="pName != null and pName != ''">
+            and p_name = #{pName,jdbcType=VARCHAR}
+        </if>
+        <if test="handAddress != null and handAddress != ''">
+            and hand_address like concat('%', #{handAddress,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="handAge != null and handAge != ''">
+            and hand_age = #{handAge,jdbcType=INTEGER}
+        </if>
+
+    </where>
+</select>
+
+    <select id="selectHandRoomForA" parameterType="com.zlk.bean.HandRoomBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from hand_room
+
+        <where>
+            hand_number>=0
+            <if test="handName != null and handName != ''">
+                and hand_name like concat('%', #{handName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="handPrice != null and handPrice != ''">
+                and hand_price like concat('%', #{handPrice,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="handAddress != null and handAddress != ''">
+                and hand_address like concat('%', #{handAddress,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="handAge != null and handAge != ''">
+                and hand_age = #{handAge,jdbcType=INTEGER}
+            </if>
+
+        </where>
+    </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hand_room
+    where hand_id = #{handId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zlk.bean.HandRoomBean">
+    insert into hand_room (hand_id, hand_name, hand_price, 
+      p_name, hand_address, hand_number, 
+      hand_img, hand_describe, hand_age, 
+      hand_colnum)
+    values (#{handId,jdbcType=INTEGER}, #{handName,jdbcType=VARCHAR}, #{handPrice,jdbcType=DOUBLE}, 
+      #{pName,jdbcType=VARCHAR}, #{handAddress,jdbcType=VARCHAR}, #{handNumber,jdbcType=INTEGER}, 
+      #{handImg,jdbcType=VARCHAR}, #{handDescribe,jdbcType=VARCHAR}, #{handAge,jdbcType=INTEGER}, 
+      #{handColnum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zlk.bean.HandRoomBean">
+    insert into hand_room
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="handId != null">
+        hand_id,
+      </if>
+      <if test="handName != null">
+        hand_name,
+      </if>
+      <if test="handPrice != null">
+        hand_price,
+      </if>
+      <if test="pName != null">
+        p_name,
+      </if>
+      <if test="handAddress != null">
+        hand_address,
+      </if>
+      <if test="handNumber != null">
+        hand_number,
+      </if>
+      <if test="handImg != null">
+        hand_img,
+      </if>
+      <if test="handDescribe != null">
+        hand_describe,
+      </if>
+      <if test="handAge != null">
+        hand_age,
+      </if>
+      <if test="handColnum != null">
+        hand_colnum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="handId != null">
+        #{handId,jdbcType=INTEGER},
+      </if>
+      <if test="handName != null">
+        #{handName,jdbcType=VARCHAR},
+      </if>
+      <if test="handPrice != null">
+        #{handPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="pName != null">
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="handAddress != null">
+        #{handAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="handNumber != null">
+        #{handNumber,jdbcType=INTEGER},
+      </if>
+      <if test="handImg != null">
+        #{handImg,jdbcType=VARCHAR},
+      </if>
+      <if test="handDescribe != null">
+        #{handDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="handAge != null">
+        #{handAge,jdbcType=INTEGER},
+      </if>
+      <if test="handColnum != null">
+        #{handColnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlk.bean.HandRoomBean">
+    update hand_room
+    <set>
+      <if test="handName != null">
+        hand_name = #{handName,jdbcType=VARCHAR},
+      </if>
+      <if test="handPrice != null">
+        hand_price = #{handPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="pName != null">
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="handAddress != null">
+        hand_address = #{handAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="handNumber != null">
+        hand_number = #{handNumber,jdbcType=INTEGER},
+      </if>
+      <if test="handImg != null">
+        hand_img = #{handImg,jdbcType=VARCHAR},
+      </if>
+      <if test="handDescribe != null">
+        hand_describe = #{handDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="handAge != null">
+        hand_age = #{handAge,jdbcType=INTEGER},
+      </if>
+      <if test="handColnum != null">
+        hand_colnum = #{handColnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where hand_id = #{handId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zlk.bean.HandRoomBean">
+    update hand_room
+    set hand_name = #{handName,jdbcType=VARCHAR},
+      hand_price = #{handPrice,jdbcType=DOUBLE},
+      p_name = #{pName,jdbcType=VARCHAR},
+      hand_address = #{handAddress,jdbcType=VARCHAR},
+      hand_number = #{handNumber,jdbcType=INTEGER},
+      hand_img = #{handImg,jdbcType=VARCHAR},
+      hand_describe = #{handDescribe,jdbcType=VARCHAR},
+      hand_age = #{handAge,jdbcType=INTEGER},
+      hand_colnum = #{handColnum,jdbcType=INTEGER}
+    where hand_id = #{handId,jdbcType=INTEGER}
+  </update>
+</mapper>

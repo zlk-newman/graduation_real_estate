@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.dao.CollectionBeanMapper">
+  <resultMap id="BaseResultMap" type="com.zlk.bean.CollectionBean">
+    <id column="col_id" jdbcType="INTEGER" property="colId" />
+    <result column="col_name" jdbcType="VARCHAR" property="colName" />
+    <result column="a_name" jdbcType="VARCHAR" property="aName" />
+    <result column="col_img" jdbcType="VARCHAR" property="colImg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    col_id, col_name, a_name, col_img
+  </sql>
+    <select id="selectById" parameterType="com.zlk.bean.CollectionBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from collection
+        where col_id = #{colId,jdbcType=INTEGER}
+    </select>
+  <select id="selectByPrimaryKey" parameterType="com.zlk.bean.CollectionBean" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from collection
+    where col_name = #{colName,jdbcType=VARCHAR}
+</select>
+    <select id="selectByA" parameterType="com.zlk.bean.CollectionBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from collection
+        where a_name = #{aName,jdbcType=VARCHAR}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collection
+    where col_id = #{colId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zlk.bean.CollectionBean">
+    insert into collection (col_id, col_name, a_name, 
+      col_img)
+    values (#{colId,jdbcType=INTEGER}, #{colName,jdbcType=VARCHAR}, #{aName,jdbcType=VARCHAR}, 
+      #{colImg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zlk.bean.CollectionBean">
+    insert into collection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="colId != null">
+        col_id,
+      </if>
+      <if test="colName != null">
+        col_name,
+      </if>
+      <if test="aName != null">
+        a_name,
+      </if>
+      <if test="colImg != null">
+        col_img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="colId != null">
+        #{colId,jdbcType=INTEGER},
+      </if>
+      <if test="colName != null">
+        #{colName,jdbcType=VARCHAR},
+      </if>
+      <if test="aName != null">
+        #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="colImg != null">
+        #{colImg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlk.bean.CollectionBean">
+    update collection
+    <set>
+      <if test="colName != null">
+        col_name = #{colName,jdbcType=VARCHAR},
+      </if>
+      <if test="aName != null">
+        a_name = #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="colImg != null">
+        col_img = #{colImg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where col_id = #{colId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zlk.bean.CollectionBean">
+    update collection
+    set col_name = #{colName,jdbcType=VARCHAR},
+      a_name = #{aName,jdbcType=VARCHAR},
+      col_img = #{colImg,jdbcType=VARCHAR}
+    where col_id = #{colId,jdbcType=INTEGER}
+  </update>
+</mapper>

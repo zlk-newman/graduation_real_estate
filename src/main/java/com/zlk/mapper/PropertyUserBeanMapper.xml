@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.dao.PropertyUserBeanMapper">
+  <resultMap id="BaseResultMap" type="com.zlk.bean.PropertyUserBean">
+    <id column="p_id" jdbcType="INTEGER" property="pId" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="p_pwd" jdbcType="VARCHAR" property="pPwd" />
+    <result column="p_img" jdbcType="VARCHAR" property="pImg" />
+    <result column="p_company" jdbcType="VARCHAR" property="pCompany" />
+    <result column="p_emil" jdbcType="VARCHAR" property="pEmil" />
+    <result column="p_phone" jdbcType="VARCHAR" property="pPhone" />
+    <result column="p_address" jdbcType="VARCHAR" property="pAddress" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    p_id, p_name, p_pwd, p_img, p_company, p_emil, p_phone, p_address
+  </sql>
+    <select id="selectByPid" parameterType="com.zlk.bean.PropertyUserBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from property_user
+        where p_id = #{pId,jdbcType=VARCHAR}
+    </select>
+  <select id="selectForLogin" parameterType="com.zlk.bean.PropertyUserBean" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from property_user
+    where p_name = #{pName,jdbcType=VARCHAR} and p_pwd = #{pPwd,jdbcType=VARCHAR}
+  </select>
+    <!--
+动态查询
+-->
+    <select id="selectPropertyUser" parameterType="com.zlk.bean.PropertyUserBean" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from property_user
+
+        <where>
+
+            <if test="pName != null and pName != ''">
+                and p_name like concat('%', #{pName,jdbcType=VARCHAR},'%')
+            </if>
+
+        </where>
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from property_user
+    where p_id = #{pId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zlk.bean.PropertyUserBean">
+    insert into property_user (p_id, p_name, p_pwd, 
+      p_img, p_company, p_emil, 
+      p_phone, p_address)
+    values (#{pId,jdbcType=INTEGER}, #{pName,jdbcType=VARCHAR}, #{pPwd,jdbcType=VARCHAR}, 
+      #{pImg,jdbcType=VARCHAR}, #{pCompany,jdbcType=VARCHAR}, #{pEmil,jdbcType=VARCHAR}, 
+      #{pPhone,jdbcType=VARCHAR}, #{pAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zlk.bean.PropertyUserBean">
+    insert into property_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        p_id,
+      </if>
+      <if test="pName != null">
+        p_name,
+      </if>
+      <if test="pPwd != null">
+        p_pwd,
+      </if>
+      <if test="pImg != null">
+        p_img,
+      </if>
+      <if test="pCompany != null">
+        p_company,
+      </if>
+      <if test="pEmil != null">
+        p_emil,
+      </if>
+      <if test="pPhone != null">
+        p_phone,
+      </if>
+      <if test="pAddress != null">
+        p_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pId != null">
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null">
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pPwd != null">
+        #{pPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="pImg != null">
+        #{pImg,jdbcType=VARCHAR},
+      </if>
+      <if test="pCompany != null">
+        #{pCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="pEmil != null">
+        #{pEmil,jdbcType=VARCHAR},
+      </if>
+      <if test="pPhone != null">
+        #{pPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="pAddress != null">
+        #{pAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlk.bean.PropertyUserBean">
+    update property_user
+    <set>
+      <if test="pName != null">
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pPwd != null">
+        p_pwd = #{pPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="pImg != null">
+        p_img = #{pImg,jdbcType=VARCHAR},
+      </if>
+      <if test="pCompany != null">
+        p_company = #{pCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="pEmil != null">
+        p_emil = #{pEmil,jdbcType=VARCHAR},
+      </if>
+      <if test="pPhone != null">
+        p_phone = #{pPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="pAddress != null">
+        p_address = #{pAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zlk.bean.PropertyUserBean">
+    update property_user
+    set p_name = #{pName,jdbcType=VARCHAR},
+      p_pwd = #{pPwd,jdbcType=VARCHAR},
+      p_img = #{pImg,jdbcType=VARCHAR},
+      p_company = #{pCompany,jdbcType=VARCHAR},
+      p_emil = #{pEmil,jdbcType=VARCHAR},
+      p_phone = #{pPhone,jdbcType=VARCHAR},
+      p_address = #{pAddress,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+</mapper>
